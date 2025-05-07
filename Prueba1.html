@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba 1</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+    }
+    .input-word {
+      width: 100px;
+      text-align: center;
+      margin: 0 5px;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -20%);
+      background-color: white;
+      border: 3px solid;
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      z-index: 1000;
+    }
+    .popup.success {
+      border-color: green;
+      color: green;
+    }
+    .popup.error {
+      border-color: red;
+      color: red;
+    }
+    .popup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Prueba 1</h2>
+  <p>
+    El Teorema de Thevenin y Norton establece que cualquier circuito puede reducirse a una fuente de 
+    <input type="text" class="input-word" id="word1"> 
+    con una resistencia en 
+    <input type="text" class="input-word" id="word2"> 
+    o una fuente de 
+    <input type="text" class="input-word" id="word3"> 
+    con una resistencia en 
+    <input type="text" class="input-word" id="word4">.
+  </p>
+  <br>
+  <button onclick="verificar()">Verificar respuestas</button>
+
+  <!-- Éxito -->
+  <div id="popupSuccess" class="popup success">
+    <h2>¡Enhorabuena, has acertado!</h2>
+    <p>Pasas a la siguiente prueba</p>
+    <button onclick="cerrarPopup()">Continuar</button>
+  </div>
+
+  <!-- Error -->
+  <div id="popupError" class="popup error">
+    <h2>Vuelve a intentarlo</h2>
+    <p>Debes acertar todas las palabras para pasar a la siguiente prueba</p>
+    <button onclick="cerrarPopup()">Cerrar</button>
+  </div>
+
+  <div id="overlay"></div>
+
+  <script>
+    const respuestas = {
+      word1: "tensión",
+      word2: "serie",
+      word3: "corriente",
+      word4: "paralelo"
+    };
+
+    function verificar() {
+      let aciertos = 0;
+      let total = Object.keys(respuestas).length;
+
+      for (let id in respuestas) {
+        let input = document.getElementById(id);
+        let valor = input.value.trim();
+
+        if (valor === respuestas[id]) {
+          input.disabled = true;
+          aciertos++;
+        } else {
+          input.value = "";
+        }
+      }
+
+      if (aciertos === total) {
+        mostrarPopup("popupSuccess");
+      } else {
+        mostrarPopup("popupError");
+      }
+    }
+
+    function mostrarPopup(id) {
+      document.getElementById("overlay").style.display = "block";
+      document.getElementById(id).style.display = "block";
+    }
+
+    function cerrarPopup() {
+      document.getElementById("popupSuccess").style.display = "none";
+      document.getElementById("popupError").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
